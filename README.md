@@ -1,63 +1,64 @@
 # Global Crime & Socioeconomic Analysis
 
-## Objective
+Academic project done during my 2nd year of MIASHS at Université Paul Valéry Montpellier 3 (2024-2025), for the Databases and Data Science 2 courses.
 
-We are looking at how developed a country's how safe it is. We want to know if a countrys economy, cities and location affect its crime rates.
+The goal was to study whether a country's development model (economy, urbanization, geography) actually determines how safe its cities are. We crossed crime indices from 404 cities with socioeconomic indicators from 103 countries to test this statistically.
 
-The main question we are trying to answer is:
-How much does a countrys development model affect how safe it is?
+## Research question
 
----
+To what extent does a country's development model influence the safety level of its cities?
+
+We wanted to check if economic wealth is really the main driver of urban safety, or if other factors like minimum wage, unemployment or urbanization play a bigger role.
 
 ## Datasets
 
-We are using two sets of data from Kaggle:
+Both datasets come from Kaggle (2023):
 
-- World Crime Index 2023
-- Global Country Information Dataset 2023
+- World Crime Index 2023 — 404 rows, crime indices at city level
+- Global Country Information 2023 — 103 rows, GDP, minimum wage, unemployment rate, urban population and other national indicators
 
----
+## Tools
+
+- SQL (MySQL with MAMP and phpMyAdmin) for the database
+- R and RStudio for the statistical analysis
+- R Markdown for the final report
+- ggplot2 for the visualizations
+- Excel and LibreOffice Calc for the initial data cleaning
 
 ## Methodology
 
-### 1. Data Modeling & Preparation
+### Database part
 
-- We designed how our data should be structured
-- We cleaned up the data to make sure it is accurate
-- We removed any information that was not relevant
-- We got the data ready to be analyzed using SQL
+We built a conceptual data model (MCD) and a relational model (MOD), imported both datasets into MySQL, and wrote SQL queries to extract the indicators we needed.
 
----
+A big part of the work was the cleaning step before importing: standardizing country names, grouping US states and Canadian provinces, removing irrelevant columns, and reformatting numeric fields (removing $, %, thousand separators) so SQL could read them as proper numeric types.
 
-### 2. SQL Analysis
+### Statistical part
 
-- We stored our data in a database that's easy to search
-- We ran SQL queries to find the information we need
-- We pulled out the details to answer our question
+In R we produced a world crime map and scatter plots crossing the average crime index with GDP, minimum wage, unemployment rate and urban population. Then we ran a multiple linear regression to test whether the combination of GDP, minimum wage and unemployment had a significant effect on crime.
 
----
+## Key findings
 
-### 3. Analysis
+The multiple linear regression gave a Fisher statistic of F = 2.982 with a p-value of 0.036, which is below the 5% threshold. So we can say, with a 5% risk, that the combination of GDP, minimum wage and unemployment has a significant effect on a country's crime level.
 
-- We analyzed our data using a programming language called R
-- We used a tool called ggplot2 to make pictures of our data to see patterns
-- We looked closely at our data to understand what it is telling us
+But the model only explains around 10.3% of the variance (R² = 0.103), which means economic factors alone are not enough to explain insecurity. Looking at each variable individually, only the minimum wage is significant on its own (p = 0.019), with a negative coefficient of −1.23: the higher the minimum wage, the lower the crime index. Once we account for minimum wage, GDP and unemployment lose their individual significance.
 
-We used several statistical tests:
+Three main takeaways:
 
-- We measured how different things are related using correlation analysis
-- We looked at how different groups are connected using the Chi-square test
-- We compared the averages of different groups using ANOVA
-- We modeled how key things are related using linear regression analysis
+- Raw economic wealth (GDP) doesn't guarantee safety. Venezuela and South Africa are economically significant but have high crime levels, while Qatar and Switzerland combine wealth and safety.
+- Minimum wage is the most relevant economic lever in our model. Countries with higher minimum wages tend to be safer.
+- Massive urbanization is not automatically linked to insecurity. Big Asian cities in Japan or China stay very safe despite their density.
 
----
+## Limitations
 
-## Team
+The dataset is geographically unbalanced: the United States alone is almost half of the cities studied, while Sub-Saharan Africa and Central Asia are underrepresented. The crime index is also based on perception rather than official statistics, which is a methodological limit. And with an R² of only 10%, most of the variance stays unexplained — variables like income inequality, education or public policy would probably improve the model.
 
-AMAI Group: Zizi Ahmed, Haki Moatacem, Ejebli Adem ,Ikdoumi Ilian
+## Team — AMAI Group
 
----
+Ahmed Zizi, Moatacem Haki, Adem Ejebli, Ilian Ikdoumi.
 
-## Goal
+## Report
 
-We want to figure out if a countrys economy is the main thing that affects how safe it is.. Are other things, like cities, location and government more important?
+The full report (in French) is available in this repository as `rapport-GAMAI.pdf`.
+
+Project supervised by Mme Sandra Bringay (Databases) and Mme Marine Demangeot (Data Science 2).
